@@ -2,685 +2,873 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<html>
-<head>
-  <title>Meu site</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Junqueira & Farias Advogados Associados</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <script>
-    var senha = "JunqueiraeFarias"; // ALTERA AQUI
+  :root {
+    --roxo:       #3B0A6E;
+    --roxo-escuro:#260650;
+    --roxo-meio:  #5A1DAD;
+    --branco:     #FFFFFF;
+    --branco-off: #F5F0FF;
+    --ouro:       #C9A84C;
+  }
 
-    var entrada = prompt("Digite a senha para acessar o site:");
+  html { scroll-behavior: smooth; }
 
-    if (entrada !== senha) {
-      document.write("Acesso negado.");
-    }
-  </script>
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--roxo);
+    color: var(--branco);
+    overflow-x: hidden;
+  }
 
+  /* ══════════════════════════════════════
+     TELA DE SENHA
+  ══════════════════════════════════════ */
+  #senha-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--roxo-escuro);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2rem;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+  }
+  #senha-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg,   transparent, transparent 59px, rgba(255,255,255,0.025) 60px),
+      repeating-linear-gradient(90deg,  transparent, transparent 59px, rgba(255,255,255,0.025) 60px);
+    pointer-events: none;
+  }
+  #senha-overlay.oculto {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .senha-card {
+    position: relative;
+    z-index: 2;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 56px 52px;
+    width: 100%;
+    max-width: 440px;
+    text-align: center;
+    backdrop-filter: blur(12px);
+    animation: fadeUp 0.6s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .senha-logo-nome {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.65rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--branco);
+    line-height: 1;
+  }
+  .senha-logo-sub {
+    font-size: 0.62rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ouro);
+    margin-top: 6px;
+    display: block;
+  }
+
+  .senha-divider {
+    width: 40px;
+    height: 1px;
+    background: rgba(255,255,255,0.15);
+    margin: 28px auto;
+  }
+
+  .senha-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 300;
+    color: var(--branco);
+    margin-bottom: 6px;
+  }
+  .senha-desc {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.06em;
+    margin-bottom: 32px;
+    line-height: 1.7;
+  }
+
+  .senha-field {
+    position: relative;
+    margin-bottom: 14px;
+  }
+  .senha-field input {
+    width: 100%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 6px;
+    padding: 14px 48px 14px 18px;
+    color: var(--branco);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.12em;
+    outline: none;
+    transition: border-color 0.25s, background 0.25s;
+    text-align: center;
+  }
+  .senha-field input::placeholder {
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.3);
+  }
+  .senha-field input:focus {
+    border-color: var(--ouro);
+    background: rgba(255,255,255,0.1);
+  }
+  .senha-field input.erro {
+    border-color: #e05555;
+    background: rgba(224,85,85,0.08);
+    animation: shake 0.4s ease;
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%      { transform: translateX(-8px); }
+    40%      { transform: translateX(8px); }
+    60%      { transform: translateX(-5px); }
+    80%      { transform: translateX(5px); }
+  }
+
+  .toggle-senha {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(255,255,255,0.35);
+    font-size: 1rem;
+    padding: 4px;
+    transition: color 0.2s;
+    line-height: 1;
+  }
+  .toggle-senha:hover { color: rgba(255,255,255,0.7); }
+
+  .senha-erro-msg {
+    font-size: 0.72rem;
+    color: #e05555;
+    margin-bottom: 14px;
+    min-height: 18px;
+    letter-spacing: 0.06em;
+    transition: opacity 0.2s;
+  }
+
+  .btn-entrar {
+    width: 100%;
+    padding: 14px;
+    background: var(--ouro);
+    color: var(--roxo-escuro);
+    border: none;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.15s;
+    margin-top: 4px;
+  }
+  .btn-entrar:hover { background: #d9b85c; }
+  .btn-entrar:active { transform: scale(0.98); }
+
+  .tentativas-msg {
+    margin-top: 16px;
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.06em;
+  }
+  .tentativas-msg span { color: var(--ouro); font-weight: 600; }
+
+  /* ══════════════════════════════════════
+     SITE PRINCIPAL (começa oculto)
+  ══════════════════════════════════════ */
+  #site-conteudo {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease 0.2s, visibility 0.6s ease 0.2s;
+  }
+  #site-conteudo.visivel {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--roxo-escuro);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    padding: 18px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo { display: flex; flex-direction: column; }
+  .logo-nome {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--branco);
+    line-height: 1;
+  }
+  .logo-sub {
+    font-size: 0.62rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ouro);
+    margin-top: 4px;
+  }
+  nav a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-left: 36px;
+    transition: color 0.25s;
+  }
+  nav a:hover { color: var(--branco); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 60px 80px;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(ellipse 80% 80% at 110% 50%, #5A1DAD44 0%, transparent 70%),
+                var(--roxo-escuro);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg,   transparent, transparent 59px, rgba(255,255,255,0.03) 60px),
+      repeating-linear-gradient(90deg,  transparent, transparent 59px, rgba(255,255,255,0.03) 60px);
+    pointer-events: none;
+  }
+  .hero-inner {
+    max-width: 1100px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    width: 100%;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ouro);
+    border: 1px solid var(--ouro);
+    padding: 5px 14px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--branco);
+    margin-bottom: 24px;
+  }
+  .hero h1 em { font-style: italic; color: rgba(255,255,255,0.65); }
+  .hero p {
+    font-size: 0.88rem;
+    line-height: 1.9;
+    color: rgba(255,255,255,0.7);
+    max-width: 480px;
+    margin-bottom: 40px;
+  }
+  .btn {
+    display: inline-block;
+    padding: 14px 36px;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .btn-branco { background: var(--branco); color: var(--roxo-escuro); font-weight: 600; }
+  .btn-branco:hover { background: var(--ouro); color: var(--branco); }
+  .btn-outline {
+    border: 1px solid rgba(255,255,255,0.4);
+    color: var(--branco);
+    margin-left: 16px;
+  }
+  .btn-outline:hover { border-color: var(--branco); background: rgba(255,255,255,0.08); }
+  .hero-badge {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 48px;
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .stat {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding-bottom: 24px;
+  }
+  .stat:last-child { border-bottom: none; padding-bottom: 0; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.2rem;
+    font-weight: 300;
+    color: var(--branco);
+    line-height: 1;
+  }
+  .stat-txt {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    line-height: 1.4;
+    padding-bottom: 6px;
+  }
+  .stat-accent { color: var(--ouro); }
+
+  /* ── SECTIONS COMMON ── */
+  section { padding: 100px 60px; }
+  .max { max-width: 1100px; margin: auto; }
+  .sec-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--ouro);
+    display: block;
+    margin-bottom: 16px;
+  }
+  .sec-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 300;
+    color: var(--branco);
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .sec-desc {
+    font-size: 0.88rem;
+    line-height: 1.9;
+    color: rgba(255,255,255,0.65);
+    max-width: 560px;
+  }
+
+  /* ── SOBRE ── */
+  #sobre { background: var(--roxo); }
+  .sobre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .sobre-lista { list-style: none; margin-top: 36px; display: flex; flex-direction: column; gap: 14px; }
+  .sobre-lista li {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.75);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .sobre-lista li::before { content: '—'; color: var(--ouro); flex-shrink: 0; }
+  .sobre-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 48px;
+  }
+  .sobre-card p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.55rem;
+    font-style: italic;
+    font-weight: 300;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.6;
+  }
+  .sobre-card span {
+    display: block;
+    margin-top: 24px;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ouro);
+  }
+
+  /* ── SERVIÇOS ── */
+  #servicos { background: var(--roxo-escuro); }
+  .servicos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
+  .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 40px 32px;
+    transition: all 0.3s;
+    cursor: default;
+  }
+  .card:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.22); transform: translateY(-4px); }
+  .card-icon { font-size: 2rem; margin-bottom: 20px; display: block; }
+  .card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 400;
+    color: var(--branco);
+    margin-bottom: 14px;
+  }
+  .card p { font-size: 0.82rem; line-height: 1.8; color: rgba(255,255,255,0.6); }
+
+  /* ── CONTATO ── */
+  #contato { background: var(--roxo); }
+  .contato-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .contato-items { display: flex; flex-direction: column; gap: 36px; margin-top: 40px; }
+  .contato-item { display: flex; gap: 20px; align-items: flex-start; }
+  .contato-icon {
+    width: 44px; height: 44px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    color: var(--ouro);
+  }
+  .contato-info strong {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 6px;
+  }
+  .contato-info a, .contato-info span {
+    font-size: 0.9rem;
+    color: var(--branco);
+    text-decoration: none;
+    line-height: 1.5;
+  }
+  .contato-info a:hover { color: var(--ouro); }
+  .contato-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 48px;
+  }
+  .contato-box h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 300; margin-bottom: 8px; }
+  .contato-box p { font-size: 0.82rem; color: rgba(255,255,255,0.55); margin-bottom: 28px; }
+  .form-field { margin-bottom: 18px; }
+  .form-field label {
+    display: block;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 8px;
+  }
+  .form-field input, .form-field textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    padding: 12px 16px;
+    color: var(--branco);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.25s;
+  }
+  .form-field input:focus, .form-field textarea:focus { border-color: rgba(255,255,255,0.45); }
+  .form-field textarea { resize: vertical; min-height: 100px; }
+  .btn-full { display: block; width: 100%; text-align: center; margin-top: 8px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--roxo-escuro);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 40px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer .logo-nome { font-size: 1.1rem; }
+  footer p { font-size: 0.72rem; color: rgba(255,255,255,0.35); letter-spacing: 0.05em; }
+
+  /* ── WHATSAPP FLOAT ── */
+  .wa-float {
+    position: fixed;
+    bottom: 32px; right: 32px;
+    z-index: 200;
+    background: #25D366;
+    color: #fff;
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    text-decoration: none;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+    transition: transform 0.25s;
+  }
+  .wa-float:hover { transform: scale(1.1); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    header { padding: 16px 28px; }
+    nav { display: none; }
+    section { padding: 72px 28px; }
+    .hero { padding: 100px 28px 60px; }
+    .hero-inner, .sobre-grid, .contato-grid { grid-template-columns: 1fr; gap: 40px; }
+    .servicos-grid { grid-template-columns: 1fr; }
+    footer { padding: 32px 28px; flex-direction: column; text-align: center; }
+    .senha-card { padding: 40px 28px; }
+  }
+</style>
 </head>
 <body>
 
-<h1>Bem vindo</h1>
+<!-- ══════════════════════════════════════
+     TELA DE SENHA
+══════════════════════════════════════ -->
+<div id="senha-overlay">
+  <div class="senha-card">
+    <div class="senha-logo-nome">Junqueira &amp; Farias</div>
+    <span class="senha-logo-sub">Advogados Associados</span>
+    <div class="senha-divider"></div>
+    <div class="senha-title">Área Restrita</div>
+    <p class="senha-desc">Este site é de acesso exclusivo.<br>Insira a senha para continuar.</p>
 
-</body>
-</html>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Junqueira & Farias Advogados Associados</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --roxo:       #3B0A6E;
-      --roxo-escuro:#260650;
-      --roxo-meio:  #5A1DAD;
-      --branco:     #FFFFFF;
-      --branco-off: #F5F0FF;
-      --ouro:       #C9A84C;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: var(--roxo);
-      color: var(--branco);
-      overflow-x: hidden;
-    }
-
-    /* ── HEADER ── */
-    header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      background: var(--roxo-escuro);
-      border-bottom: 1px solid rgba(255,255,255,0.12);
-      padding: 18px 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .logo-nome {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      color: var(--branco);
-      line-height: 1;
-    }
-
-    .logo-sub {
-      font-size: 0.62rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--ouro);
-      margin-top: 4px;
-    }
-
-    nav a {
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      margin-left: 36px;
-      transition: color 0.25s;
-    }
-    nav a:hover { color: var(--branco); }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 120px 60px 80px;
-      position: relative;
-      overflow: hidden;
-      background: radial-gradient(ellipse 80% 80% at 110% 50%, #5A1DAD44 0%, transparent 70%),
-                  var(--roxo-escuro);
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        repeating-linear-gradient(0deg,   transparent, transparent 59px, rgba(255,255,255,0.03) 60px),
-        repeating-linear-gradient(90deg,  transparent, transparent 59px, rgba(255,255,255,0.03) 60px);
-      pointer-events: none;
-    }
-
-    .hero-inner {
-      max-width: 1100px;
-      margin: auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-      width: 100%;
-    }
-
-    .hero-tag {
-      display: inline-block;
-      font-size: 0.65rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--ouro);
-      border: 1px solid var(--ouro);
-      padding: 5px 14px;
-      border-radius: 2px;
-      margin-bottom: 28px;
-    }
-
-    .hero h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.8rem, 5vw, 4.5rem);
-      font-weight: 300;
-      line-height: 1.1;
-      color: var(--branco);
-      margin-bottom: 24px;
-    }
-    .hero h1 em {
-      font-style: italic;
-      color: rgba(255,255,255,0.65);
-    }
-
-    .hero p {
-      font-size: 0.88rem;
-      line-height: 1.9;
-      color: rgba(255,255,255,0.7);
-      max-width: 480px;
-      margin-bottom: 40px;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 14px 36px;
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 2px;
-      transition: all 0.3s;
-      cursor: pointer;
-    }
-    .btn-branco {
-      background: var(--branco);
-      color: var(--roxo-escuro);
-      font-weight: 600;
-    }
-    .btn-branco:hover {
-      background: var(--ouro);
-      color: var(--branco);
-    }
-    .btn-outline {
-      border: 1px solid rgba(255,255,255,0.4);
-      color: var(--branco);
-      margin-left: 16px;
-    }
-    .btn-outline:hover {
-      border-color: var(--branco);
-      background: rgba(255,255,255,0.08);
-    }
-
-    .hero-badge {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 12px;
-      padding: 48px;
-      backdrop-filter: blur(8px);
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
-    }
-
-    .stat {
-      display: flex;
-      align-items: flex-end;
-      gap: 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      padding-bottom: 24px;
-    }
-    .stat:last-child { border-bottom: none; padding-bottom: 0; }
-
-    .stat-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 3.2rem;
-      font-weight: 300;
-      color: var(--branco);
-      line-height: 1;
-    }
-    .stat-txt {
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      color: rgba(255,255,255,0.55);
-      text-transform: uppercase;
-      line-height: 1.4;
-      padding-bottom: 6px;
-    }
-    .stat-accent { color: var(--ouro); }
-
-    /* ── SECTIONS COMMON ── */
-    section {
-      padding: 100px 60px;
-    }
-    .max { max-width: 1100px; margin: auto; }
-
-    .sec-label {
-      font-size: 0.65rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--ouro);
-      display: block;
-      margin-bottom: 16px;
-    }
-
-    .sec-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 3.5vw, 3rem);
-      font-weight: 300;
-      color: var(--branco);
-      line-height: 1.2;
-      margin-bottom: 20px;
-    }
-
-    .sec-desc {
-      font-size: 0.88rem;
-      line-height: 1.9;
-      color: rgba(255,255,255,0.65);
-      max-width: 560px;
-    }
-
-    /* ── SOBRE ── */
-    #sobre { background: var(--roxo); }
-    .sobre-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-    .sobre-lista {
-      list-style: none;
-      margin-top: 36px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .sobre-lista li {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.75);
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-    }
-    .sobre-lista li::before {
-      content: '—';
-      color: var(--ouro);
-      flex-shrink: 0;
-    }
-
-    .sobre-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 48px;
-    }
-    .sobre-card p {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.55rem;
-      font-style: italic;
-      font-weight: 300;
-      color: rgba(255,255,255,0.85);
-      line-height: 1.6;
-    }
-    .sobre-card span {
-      display: block;
-      margin-top: 24px;
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--ouro);
-    }
-
-    /* ── SERVIÇOS ── */
-    #servicos { background: var(--roxo-escuro); }
-    .servicos-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-top: 56px;
-    }
-    .card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 40px 32px;
-      transition: all 0.3s;
-      cursor: default;
-    }
-    .card:hover {
-      background: rgba(255,255,255,0.08);
-      border-color: rgba(255,255,255,0.22);
-      transform: translateY(-4px);
-    }
-    .card-icon {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      display: block;
-    }
-    .card h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.35rem;
-      font-weight: 400;
-      color: var(--branco);
-      margin-bottom: 14px;
-    }
-    .card p {
-      font-size: 0.82rem;
-      line-height: 1.8;
-      color: rgba(255,255,255,0.6);
-    }
-
-    /* ── CONTATO ── */
-    #contato { background: var(--roxo); }
-    .contato-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-    .contato-items {
-      display: flex;
-      flex-direction: column;
-      gap: 36px;
-      margin-top: 40px;
-    }
-    .contato-item {
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-    }
-    .contato-icon {
-      width: 44px; height: 44px;
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-      color: var(--ouro);
-    }
-    .contato-info strong {
-      display: block;
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.4);
-      margin-bottom: 6px;
-    }
-    .contato-info a,
-    .contato-info span {
-      font-size: 0.9rem;
-      color: var(--branco);
-      text-decoration: none;
-      line-height: 1.5;
-    }
-    .contato-info a:hover { color: var(--ouro); }
-
-    .contato-box {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 48px;
-    }
-    .contato-box h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.7rem;
-      font-weight: 300;
-      margin-bottom: 8px;
-    }
-    .contato-box p {
-      font-size: 0.82rem;
-      color: rgba(255,255,255,0.55);
-      margin-bottom: 28px;
-    }
-    .form-field {
-      margin-bottom: 18px;
-    }
-    .form-field label {
-      display: block;
-      font-size: 0.68rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 8px;
-    }
-    .form-field input,
-    .form-field textarea {
-      width: 100%;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 6px;
-      padding: 12px 16px;
-      color: var(--branco);
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.85rem;
-      outline: none;
-      transition: border-color 0.25s;
-    }
-    .form-field input:focus,
-    .form-field textarea:focus {
-      border-color: rgba(255,255,255,0.45);
-    }
-    .form-field textarea { resize: vertical; min-height: 100px; }
-    .btn-full { display: block; width: 100%; text-align: center; margin-top: 8px; }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--roxo-escuro);
-      border-top: 1px solid rgba(255,255,255,0.08);
-      padding: 40px 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    footer .logo-nome { font-size: 1.1rem; }
-    footer p {
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.35);
-      letter-spacing: 0.05em;
-    }
-
-    /* ── WHATSAPP BTN ── */
-    .wa-float {
-      position: fixed;
-      bottom: 32px; right: 32px;
-      z-index: 200;
-      background: #25D366;
-      color: #fff;
-      width: 56px; height: 56px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.6rem;
-      text-decoration: none;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.35);
-      transition: transform 0.25s;
-    }
-    .wa-float:hover { transform: scale(1.1); }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      header { padding: 16px 28px; }
-      nav { display: none; }
-      section { padding: 72px 28px; }
-      .hero { padding: 100px 28px 60px; }
-      .hero-inner,
-      .sobre-grid,
-      .contato-grid { grid-template-columns: 1fr; gap: 40px; }
-      .servicos-grid { grid-template-columns: 1fr; }
-      footer { padding: 32px 28px; flex-direction: column; text-align: center; }
-    }
-  </style>
-</head>
-<body>
-
-<!-- HEADER -->
-<header>
-  <div class="logo">
-    <span class="logo-nome">Junqueira &amp; Farias</span>
-    <span class="logo-sub">Advogados Associados</span>
-  </div>
-  <nav>
-    <a href="#sobre">Sobre</a>
-    <a href="#servicos">Serviços</a>
-    <a href="#contato">Contato</a>
-  </nav>
-</header>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-inner">
-    <div>
-      <span class="hero-tag">Fomento Mercantil &amp; Recuperação de Crédito</span>
-      <h1>Expertise jurídica<br/>a serviço <em>do seu</em><br/>negócio.</h1>
-      <p>
-        Há mais de 30 anos, oferecemos soluções jurídicas especializadas com foco em segurança,
-        efetividade e personalização — da prevenção de riscos à recuperação de crédito.
-      </p>
-      <a href="#contato" class="btn btn-branco">Falar com advogado</a>
-      <a href="#servicos" class="btn btn-outline">Nossos serviços</a>
+    <div class="senha-field">
+      <input
+        type="password"
+        id="campo-senha"
+        placeholder="Digite a senha"
+        autocomplete="off"
+        onkeydown="if(event.key==='Enter') verificarSenha()"
+      />
+      <button class="toggle-senha" onclick="toggleVisibilidade()" title="Mostrar/ocultar senha">👁</button>
     </div>
-    <div class="hero-badge">
-      <div class="stat">
-        <span class="stat-num stat-accent">30</span>
-        <div class="stat-txt">Anos de<br/>atuação</div>
-      </div>
-      <div class="stat">
-        <span class="stat-num">100%</span>
-        <div class="stat-txt">Soluções<br/>personalizadas</div>
-      </div>
-      <div class="stat">
-        <span class="stat-num">2</span>
-        <div class="stat-txt">Esferas de atuação:<br/>Administrativa &amp; Judicial</div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- SOBRE -->
-<section id="sobre">
-  <div class="max">
-    <div class="sobre-grid">
+    <div class="senha-erro-msg" id="erro-msg"></div>
+
+    <button class="btn-entrar" onclick="verificarSenha()">Entrar</button>
+
+    <p class="tentativas-msg" id="tentativas-msg"></p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SITE PRINCIPAL
+══════════════════════════════════════ -->
+<div id="site-conteudo">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <span class="logo-nome">Junqueira &amp; Farias</span>
+      <span class="logo-sub">Advogados Associados</span>
+    </div>
+    <nav>
+      <a href="#sobre">Sobre</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#contato">Contato</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
       <div>
-        <span class="sec-label">Quem somos</span>
-        <h2 class="sec-title">Referência em fomento mercantil há décadas</h2>
-        <p class="sec-desc">
-          O Junqueira &amp; Farias Advogados Associados é reconhecido no mercado jurídico pela excelência
-          técnica e pelo comprometimento com resultados concretos para seus clientes.
-        </p>
-        <ul class="sobre-lista">
-          <li>Estratégias eficientes de prevenção e mitigação de riscos</li>
-          <li>Recuperação de crédito na esfera administrativa e judicial</li>
-          <li>Elaboração de documentos e contratos personalizados</li>
-          <li>Análise jurídica criteriosa e ajustada à sua operação</li>
-          <li>Atendimento ágil e transparente em todas as etapas</li>
-        </ul>
-      </div>
-      <div class="sobre-card">
+        <span class="hero-tag">Fomento Mercantil &amp; Recuperação de Crédito</span>
+        <h1>Expertise jurídica<br/>a serviço <em>do seu</em><br/>negócio.</h1>
         <p>
-          "Cada contrato e instrumento é ajustado às necessidades específicas
-          da operação do cliente — garantindo mais segurança e efetividade."
+          Há mais de 30 anos, oferecemos soluções jurídicas especializadas com foco em segurança,
+          efetividade e personalização — da prevenção de riscos à recuperação de crédito.
         </p>
-        <span>— Junqueira &amp; Farias Advogados</span>
+        <a href="#contato" class="btn btn-branco">Falar com advogado</a>
+        <a href="#servicos" class="btn btn-outline">Nossos serviços</a>
+      </div>
+      <div class="hero-badge">
+        <div class="stat">
+          <span class="stat-num stat-accent">30</span>
+          <div class="stat-txt">Anos de<br/>atuação</div>
+        </div>
+        <div class="stat">
+          <span class="stat-num">100%</span>
+          <div class="stat-txt">Soluções<br/>personalizadas</div>
+        </div>
+        <div class="stat">
+          <span class="stat-num">2</span>
+          <div class="stat-txt">Esferas de atuação:<br/>Administrativa &amp; Judicial</div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- SERVIÇOS -->
-<section id="servicos">
-  <div class="max">
-    <span class="sec-label">Áreas de atuação</span>
-    <h2 class="sec-title">Soluções jurídicas<br/>completas</h2>
-    <div class="servicos-grid">
-      <div class="card">
-        <span class="card-icon">⚖️</span>
-        <h3>Fomento Mercantil</h3>
-        <p>Assessoria jurídica especializada em factoring, securitização e estruturação de operações de crédito mercantil com segurança e solidez.</p>
-      </div>
-      <div class="card">
-        <span class="card-icon">🛡️</span>
-        <h3>Prevenção de Riscos</h3>
-        <p>Identificação e mitigação de riscos jurídicos em contratos e operações comerciais, garantindo proteção prévia ao seu negócio.</p>
-      </div>
-      <div class="card">
-        <span class="card-icon">💼</span>
-        <h3>Recuperação de Crédito</h3>
-        <p>Atuação estratégica nas esferas administrativa e judicial para maximizar a recuperação de valores e proteger seu patrimônio.</p>
-      </div>
-      <div class="card">
-        <span class="card-icon">📄</span>
-        <h3>Elaboração de Contratos</h3>
-        <p>Redação e revisão de contratos personalizados, instrumentos de garantia e documentos jurídicos alinhados à sua realidade operacional.</p>
-      </div>
-      <div class="card">
-        <span class="card-icon">🔍</span>
-        <h3>Análise Jurídica</h3>
-        <p>Análise criteriosa de operações, contratos e situações jurídicas complexas, com emissão de pareceres técnicos fundamentados.</p>
-      </div>
-      <div class="card">
-        <span class="card-icon">🤝</span>
-        <h3>Consultoria Estratégica</h3>
-        <p>Acompanhamento contínuo e consultoria preventiva para tomadas de decisão mais seguras no seu negócio.</p>
+  <!-- SOBRE -->
+  <section id="sobre">
+    <div class="max">
+      <div class="sobre-grid">
+        <div>
+          <span class="sec-label">Quem somos</span>
+          <h2 class="sec-title">Referência em fomento mercantil há décadas</h2>
+          <p class="sec-desc">
+            O Junqueira &amp; Farias Advogados Associados é reconhecido no mercado jurídico pela excelência
+            técnica e pelo comprometimento com resultados concretos para seus clientes.
+          </p>
+          <ul class="sobre-lista">
+            <li>Estratégias eficientes de prevenção e mitigação de riscos</li>
+            <li>Recuperação de crédito na esfera administrativa e judicial</li>
+            <li>Elaboração de documentos e contratos personalizados</li>
+            <li>Análise jurídica criteriosa e ajustada à sua operação</li>
+            <li>Atendimento ágil e transparente em todas as etapas</li>
+          </ul>
+        </div>
+        <div class="sobre-card">
+          <p>
+            "Cada contrato e instrumento é ajustado às necessidades específicas
+            da operação do cliente — garantindo mais segurança e efetividade."
+          </p>
+          <span>— Junqueira &amp; Farias Advogados</span>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- CONTATO -->
-<section id="contato">
-  <div class="max">
-    <div class="contato-grid">
-      <div>
-        <span class="sec-label">Entre em contato</span>
-        <h2 class="sec-title">Fale com nossa equipe</h2>
-        <p class="sec-desc">Estamos prontos para atender sua demanda jurídica com agilidade e precisão.</p>
-        <div class="contato-items">
-          <div class="contato-item">
-            <div class="contato-icon">📱</div>
-            <div class="contato-info">
-              <strong>WhatsApp / Telefone</strong>
-              <a href="https://wa.me/5513997744780" target="_blank">(13) 99774-4780</a>
-            </div>
-          </div>
-          <div class="contato-item">
-            <div class="contato-icon">✉️</div>
-            <div class="contato-info">
-              <strong>E-mail</strong>
-              <a href="mailto:adm_juridico@federalinvest.com.br">adm_juridico@federalinvest.com.br</a>
-            </div>
-          </div>
-          <div class="contato-item">
-            <div class="contato-icon">📍</div>
-            <div class="contato-info">
-              <strong>Endereço</strong>
-              <span>Av. Presidente Wilson, 89 — Sala 33<br/>São Vicente-SP — CEP 11320-910</span>
-            </div>
-          </div>
+  <!-- SERVIÇOS -->
+  <section id="servicos">
+    <div class="max">
+      <span class="sec-label">Áreas de atuação</span>
+      <h2 class="sec-title">Soluções jurídicas<br/>completas</h2>
+      <div class="servicos-grid">
+        <div class="card">
+          <span class="card-icon">⚖️</span>
+          <h3>Fomento Mercantil</h3>
+          <p>Assessoria jurídica especializada em factoring, securitização e estruturação de operações de crédito mercantil com segurança e solidez.</p>
         </div>
-      </div>
-      <div class="contato-box">
-        <h3>Envie uma mensagem</h3>
-        <p>Retornamos em até 24 horas úteis.</p>
-        <div class="form-field">
-          <label>Nome completo</label>
-          <input type="text" placeholder="Seu nome"/>
+        <div class="card">
+          <span class="card-icon">🛡️</span>
+          <h3>Prevenção de Riscos</h3>
+          <p>Identificação e mitigação de riscos jurídicos em contratos e operações comerciais, garantindo proteção prévia ao seu negócio.</p>
         </div>
-        <div class="form-field">
-          <label>E-mail</label>
-          <input type="email" placeholder="seu@email.com"/>
+        <div class="card">
+          <span class="card-icon">💼</span>
+          <h3>Recuperação de Crédito</h3>
+          <p>Atuação estratégica nas esferas administrativa e judicial para maximizar a recuperação de valores e proteger seu patrimônio.</p>
         </div>
-        <div class="form-field">
-          <label>Assunto</label>
-          <input type="text" placeholder="Como podemos ajudar?"/>
+        <div class="card">
+          <span class="card-icon">📄</span>
+          <h3>Elaboração de Contratos</h3>
+          <p>Redação e revisão de contratos personalizados, instrumentos de garantia e documentos jurídicos alinhados à sua realidade operacional.</p>
         </div>
-        <div class="form-field">
-          <label>Mensagem</label>
-          <textarea placeholder="Descreva sua necessidade..."></textarea>
+        <div class="card">
+          <span class="card-icon">🔍</span>
+          <h3>Análise Jurídica</h3>
+          <p>Análise criteriosa de operações, contratos e situações jurídicas complexas, com emissão de pareceres técnicos fundamentados.</p>
         </div>
-        <a href="https://wa.me/5513997744780" target="_blank" class="btn btn-branco btn-full">
-          Enviar via WhatsApp
-        </a>
+        <div class="card">
+          <span class="card-icon">🤝</span>
+          <h3>Consultoria Estratégica</h3>
+          <p>Acompanhamento contínuo e consultoria preventiva para tomadas de decisão mais seguras no seu negócio.</p>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="logo">
-    <span class="logo-nome">Junqueira &amp; Farias</span>
-    <span class="logo-sub">Advogados Associados</span>
-  </div>
-  <p>© 2025 Junqueira &amp; Farias Advogados Associados. Todos os direitos reservados.<br/>
-     OAB/SP — São Vicente, SP</p>
-</footer>
+  <!-- CONTATO -->
+  <section id="contato">
+    <div class="max">
+      <div class="contato-grid">
+        <div>
+          <span class="sec-label">Entre em contato</span>
+          <h2 class="sec-title">Fale com nossa equipe</h2>
+          <p class="sec-desc">Estamos prontos para atender sua demanda jurídica com agilidade e precisão.</p>
+          <div class="contato-items">
+            <div class="contato-item">
+              <div class="contato-icon">📱</div>
+              <div class="contato-info">
+                <strong>WhatsApp / Telefone</strong>
+                <a href="https://wa.me/5513997744780" target="_blank">(13) 99774-4780</a>
+              </div>
+            </div>
+            <div class="contato-item">
+              <div class="contato-icon">✉️</div>
+              <div class="contato-info">
+                <strong>E-mail</strong>
+                <a href="mailto:adm_juridico@federalinvest.com.br">adm_juridico@federalinvest.com.br</a>
+              </div>
+            </div>
+            <div class="contato-item">
+              <div class="contato-icon">📍</div>
+              <div class="contato-info">
+                <strong>Endereço</strong>
+                <span>Av. Presidente Wilson, 89 — Sala 33<br/>São Vicente-SP — CEP 11320-910</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contato-box">
+          <h3>Envie uma mensagem</h3>
+          <p>Retornamos em até 24 horas úteis.</p>
+          <div class="form-field">
+            <label>Nome completo</label>
+            <input type="text" placeholder="Seu nome"/>
+          </div>
+          <div class="form-field">
+            <label>E-mail</label>
+            <input type="email" placeholder="seu@email.com"/>
+          </div>
+          <div class="form-field">
+            <label>Assunto</label>
+            <input type="text" placeholder="Como podemos ajudar?"/>
+          </div>
+          <div class="form-field">
+            <label>Mensagem</label>
+            <textarea placeholder="Descreva sua necessidade..."></textarea>
+          </div>
+          <a href="https://wa.me/5513997744780" target="_blank" class="btn btn-branco btn-full">
+            Enviar via WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<!-- WHATSAPP FLOAT -->
-<a href="https://wa.me/5513997744780" target="_blank" class="wa-float" title="Fale pelo WhatsApp">
-  &#128172;
-</a>
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo">
+      <span class="logo-nome">Junqueira &amp; Farias</span>
+      <span class="logo-sub">Advogados Associados</span>
+    </div>
+    <p>© 2025 Junqueira &amp; Farias Advogados Associados. Todos os direitos reservados.<br/>
+       OAB/SP — São Vicente, SP</p>
+  </footer>
 
+  <!-- WHATSAPP FLOAT -->
+  <a href="https://wa.me/5513997744780" target="_blank" class="wa-float" title="Fale pelo WhatsApp">
+    &#128172;
+  </a>
+
+</div><!-- fim #site-conteudo -->
+
+<script>
+  var SENHA_CORRETA = "JunqueiraeFarias";
+  var MAX_TENTATIVAS = 5;
+  var tentativas = 0;
+  var bloqueado = false;
+
+  function verificarSenha() {
+    if (bloqueado) return;
+
+    var campo = document.getElementById('campo-senha');
+    var erroMsg = document.getElementById('erro-msg');
+    var tentativasMsg = document.getElementById('tentativas-msg');
+    var entrada = campo.value.trim();
+
+    campo.classList.remove('erro');
+
+    if (!entrada) {
+      erroMsg.textContent = 'Por favor, insira a senha.';
+      campo.focus();
+      return;
+    }
+
+    if (entrada === SENHA_CORRETA) {
+      erroMsg.textContent = '';
+      tentativasMsg.innerHTML = '';
+      entrar();
+    } else {
+      tentativas++;
+      campo.value = '';
+      campo.classList.add('erro');
+
+      var restantes = MAX_TENTATIVAS - tentativas;
+
+      if (tentativas >= MAX_TENTATIVAS) {
+        bloqueado = true;
+        erroMsg.textContent = 'Acesso bloqueado. Tente novamente em 60 segundos.';
+        campo.disabled = true;
+        document.querySelector('.btn-entrar').disabled = true;
+        document.querySelector('.btn-entrar').style.opacity = '0.4';
+        tentativasMsg.innerHTML = '';
+
+        var seg = 60;
+        var timer = setInterval(function() {
+          seg--;
+          erroMsg.textContent = 'Acesso bloqueado. Tente novamente em ' + seg + ' segundos.';
+          if (seg <= 0) {
+            clearInterval(timer);
+            bloqueado = false;
+            tentativas = 0;
+            campo.disabled = false;
+            campo.classList.remove('erro');
+            document.querySelector('.btn-entrar').disabled = false;
+            document.querySelector('.btn-entrar').style.opacity = '1';
+            erroMsg.textContent = '';
+            tentativasMsg.innerHTML = '';
+            campo.focus();
+          }
+        }, 1000);
+      } else {
+        erroMsg.textContent = 'Senha incorreta. Verifique e tente novamente.';
+        if (restantes <= 2) {
+          tentativasMsg.innerHTML = 'Tentativas restantes: <span>' + restantes + '</span>';
+        }
+        campo.focus();
+      }
+    }
+  }
+
+  function entrar() {
+    var overlay = document.getElementById('senha-overlay');
+    var site = document.getElementById('site-conteudo');
+    overlay.classList.add('oculto');
+    site.classList.add('visivel');
+    document.body.style.overflow = '';
+  }
+
+  function toggleVisibilidade() {
+    var campo = document.getElementById('campo-senha');
+    campo.type = (campo.type === 'password') ? 'text' : 'password';
+  }
+
+  document.body.style.overflow = 'hidden';
+  document.getElementById('campo-senha').focus();
+</script>
 </body>
 </html>
