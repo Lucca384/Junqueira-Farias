@@ -91,14 +91,12 @@
     margin-top: 6px;
     display: block;
   }
-
   .senha-divider {
     width: 40px;
     height: 1px;
     background: rgba(255,255,255,0.15);
     margin: 28px auto;
   }
-
   .senha-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.35rem;
@@ -113,7 +111,6 @@
     margin-bottom: 32px;
     line-height: 1.7;
   }
-
   .senha-field {
     position: relative;
     margin-bottom: 14px;
@@ -152,7 +149,6 @@
     60%      { transform: translateX(-5px); }
     80%      { transform: translateX(5px); }
   }
-
   .toggle-senha {
     position: absolute;
     right: 14px;
@@ -168,16 +164,13 @@
     line-height: 1;
   }
   .toggle-senha:hover { color: rgba(255,255,255,0.7); }
-
   .senha-erro-msg {
     font-size: 0.72rem;
     color: #e05555;
     margin-bottom: 14px;
     min-height: 18px;
     letter-spacing: 0.06em;
-    transition: opacity 0.2s;
   }
-
   .btn-entrar {
     width: 100%;
     padding: 14px;
@@ -196,7 +189,6 @@
   }
   .btn-entrar:hover { background: #d9b85c; }
   .btn-entrar:active { transform: scale(0.98); }
-
   .tentativas-msg {
     margin-top: 16px;
     font-size: 0.68rem;
@@ -206,7 +198,7 @@
   .tentativas-msg span { color: var(--ouro); font-weight: 600; }
 
   /* ══════════════════════════════════════
-     SITE PRINCIPAL (começa oculto)
+     SITE PRINCIPAL
   ══════════════════════════════════════ */
   #site-conteudo {
     opacity: 0;
@@ -323,6 +315,8 @@
     border-radius: 2px;
     transition: all 0.3s;
     cursor: pointer;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
   }
   .btn-branco { background: var(--branco); color: var(--roxo-escuro); font-weight: 600; }
   .btn-branco:hover { background: var(--ouro); color: var(--branco); }
@@ -330,6 +324,7 @@
     border: 1px solid rgba(255,255,255,0.4);
     color: var(--branco);
     margin-left: 16px;
+    background: transparent;
   }
   .btn-outline:hover { border-color: var(--branco); background: rgba(255,255,255,0.08); }
   .hero-badge {
@@ -450,8 +445,99 @@
   }
   .card p { font-size: 0.82rem; line-height: 1.8; color: rgba(255,255,255,0.6); }
 
+  /* ── EQUIPE ── */
+  #equipe { background: var(--roxo); }
+  .equipe-intro { max-width: 560px; margin-bottom: 64px; }
+  .equipe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .membro-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.35s;
+  }
+  .membro-card:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(201,168,76,0.4);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .membro-foto {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .membro-foto-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(90,29,173,0.4) 0%, rgba(38,6,80,0.6) 100%);
+    gap: 12px;
+  }
+  .icone-pessoa { font-size: 4rem; opacity: 0.35; }
+  .foto-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    border: 1px dashed rgba(255,255,255,0.15);
+    padding: 6px 14px;
+    border-radius: 2px;
+  }
+  .membro-foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .membro-info { padding: 28px 28px 32px; }
+  .membro-nome {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--branco);
+    margin-bottom: 4px;
+  }
+  .membro-oab {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ouro);
+    margin-bottom: 14px;
+    display: block;
+  }
+  .membro-desc { font-size: 0.8rem; line-height: 1.85; color: rgba(255,255,255,0.55); }
+  .membro-especialidades { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .tag-esp {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .equipe-aviso {
+    margin-top: 56px;
+    padding: 32px 40px;
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .equipe-aviso-icon { font-size: 1.6rem; flex-shrink: 0; }
+  .equipe-aviso p { font-size: 0.82rem; line-height: 1.8; color: rgba(255,255,255,0.55); }
+  .equipe-aviso strong { color: var(--ouro); font-weight: 500; }
+
   /* ── CONTATO ── */
-  #contato { background: var(--roxo); }
+  #contato { background: var(--roxo-escuro); }
   .contato-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
   .contato-items { display: flex; flex-direction: column; gap: 36px; margin-top: 40px; }
   .contato-item { display: flex; gap: 20px; align-items: flex-start; }
@@ -464,7 +550,6 @@
     justify-content: center;
     font-size: 1.1rem;
     flex-shrink: 0;
-    color: var(--ouro);
   }
   .contato-info strong {
     display: block;
@@ -488,7 +573,7 @@
     padding: 48px;
   }
   .contato-box h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 300; margin-bottom: 8px; }
-  .contato-box p { font-size: 0.82rem; color: rgba(255,255,255,0.55); margin-bottom: 28px; }
+  .contato-box > p { font-size: 0.82rem; color: rgba(255,255,255,0.55); margin-bottom: 28px; }
   .form-field { margin-bottom: 18px; }
   .form-field label {
     display: block;
@@ -555,16 +640,16 @@
     .hero { padding: 100px 28px 60px; }
     .hero-inner, .sobre-grid, .contato-grid { grid-template-columns: 1fr; gap: 40px; }
     .servicos-grid { grid-template-columns: 1fr; }
+    .equipe-grid { grid-template-columns: 1fr; }
     footer { padding: 32px 28px; flex-direction: column; text-align: center; }
     .senha-card { padding: 40px 28px; }
+    .equipe-aviso { flex-direction: column; text-align: center; }
   }
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
-     TELA DE SENHA
-══════════════════════════════════════ -->
+<!-- TELA DE SENHA -->
 <div id="senha-overlay">
   <div class="senha-card">
     <div class="senha-logo-nome">Junqueira &amp; Farias</div>
@@ -581,7 +666,7 @@
         autocomplete="off"
         onkeydown="if(event.key==='Enter') verificarSenha()"
       />
-      <button class="toggle-senha" onclick="toggleVisibilidade()" title="Mostrar/ocultar senha">👁</button>
+      <button class="toggle-senha" onclick="toggleSenha()" title="Mostrar/ocultar senha">👁</button>
     </div>
 
     <div class="senha-erro-msg" id="erro-msg"></div>
@@ -592,9 +677,7 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SITE PRINCIPAL
-══════════════════════════════════════ -->
+<!-- SITE PRINCIPAL -->
 <div id="site-conteudo">
 
   <!-- HEADER -->
@@ -606,6 +689,7 @@
     <nav>
       <a href="#sobre">Sobre</a>
       <a href="#servicos">Serviços</a>
+      <a href="#equipe">Equipe</a>
       <a href="#contato">Contato</a>
     </nav>
   </header>
@@ -710,6 +794,96 @@
     </div>
   </section>
 
+  <!-- EQUIPE -->
+  <section id="equipe">
+    <div class="max">
+      <div class="equipe-intro">
+        <span class="sec-label">Nossa equipe</span>
+        <h2 class="sec-title">Profissionais dedicados<br/>à sua causa</h2>
+        <p class="sec-desc">
+          Conheça os advogados e colaboradores que compõem o Junqueira &amp; Farias —
+          uma equipe de especialistas comprometidos com a excelência e os resultados dos nossos clientes.
+        </p>
+      </div>
+
+      <div class="equipe-grid">
+
+        <div class="membro-card">
+          <div class="membro-foto">
+            <div class="membro-foto-placeholder">
+              <span class="icone-pessoa">👤</span>
+              <span class="foto-label">Foto em breve</span>
+            </div>
+          </div>
+          <div class="membro-info">
+            <div class="membro-nome">Dr. Junqueira</div>
+            <span class="membro-oab">OAB/SP — Sócio Fundador</span>
+            <p class="membro-desc">
+              Mais de 30 anos de atuação nas áreas de fomento mercantil e recuperação de crédito,
+              com profundo conhecimento das esferas administrativa e judicial.
+            </p>
+            <div class="membro-especialidades">
+              <span class="tag-esp">Fomento Mercantil</span>
+              <span class="tag-esp">Recuperação de Crédito</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="membro-card">
+          <div class="membro-foto">
+            <div class="membro-foto-placeholder">
+              <span class="icone-pessoa">👤</span>
+              <span class="foto-label">Foto em breve</span>
+            </div>
+          </div>
+          <div class="membro-info">
+            <div class="membro-nome">Dr. Farias</div>
+            <span class="membro-oab">OAB/SP — Sócio Fundador</span>
+            <p class="membro-desc">
+              Especialista em elaboração de contratos e instrumentos de garantia,
+              atuando com precisão técnica na estruturação de operações jurídicas complexas.
+            </p>
+            <div class="membro-especialidades">
+              <span class="tag-esp">Contratos</span>
+              <span class="tag-esp">Consultoria Estratégica</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="membro-card">
+          <div class="membro-foto">
+            <div class="membro-foto-placeholder">
+              <span class="icone-pessoa">👤</span>
+              <span class="foto-label">Foto em breve</span>
+            </div>
+          </div>
+          <div class="membro-info">
+            <div class="membro-nome">Colaborador(a)</div>
+            <span class="membro-oab">OAB/SP — Advogado(a) Associado(a)</span>
+            <p class="membro-desc">
+              Em breve apresentaremos mais membros da nossa equipe.
+              Trabalhamos com profissionais altamente qualificados em cada área de atuação.
+            </p>
+            <div class="membro-especialidades">
+              <span class="tag-esp">Análise Jurídica</span>
+              <span class="tag-esp">Prevenção de Riscos</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="equipe-aviso">
+        <div class="equipe-aviso-icon">📸</div>
+        <p>
+          <strong>Em construção:</strong> Esta seção está sendo preparada para apresentar
+          todos os colaboradores do escritório com fotos e informações completas.
+          Em breve estará disponível com o perfil completo de toda a equipe.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <!-- CONTATO -->
   <section id="contato">
     <div class="max">
@@ -730,7 +904,7 @@
               <div class="contato-icon">✉️</div>
               <div class="contato-info">
                 <strong>E-mail</strong>
-                <a href="mailto:adm_juridico@federalinvest.com.br">adm_juridico@federalinvest.com.br</a>
+                <a href="mailto:contato@junqueirafarias.adv.br">contato@junqueirafarias.adv.br</a>
               </div>
             </div>
             <div class="contato-item">
@@ -747,23 +921,23 @@
           <p>Retornamos em até 24 horas úteis.</p>
           <div class="form-field">
             <label>Nome completo</label>
-            <input type="text" placeholder="Seu nome"/>
+            <input type="text" id="f-nome" placeholder="Seu nome"/>
           </div>
           <div class="form-field">
             <label>E-mail</label>
-            <input type="email" placeholder="seu@email.com"/>
+            <input type="email" id="f-email" placeholder="seu@email.com"/>
           </div>
           <div class="form-field">
             <label>Assunto</label>
-            <input type="text" placeholder="Como podemos ajudar?"/>
+            <input type="text" id="f-assunto" placeholder="Como podemos ajudar?"/>
           </div>
           <div class="form-field">
             <label>Mensagem</label>
-            <textarea placeholder="Descreva sua necessidade..."></textarea>
+            <textarea id="f-mensagem" placeholder="Descreva sua necessidade..."></textarea>
           </div>
-          <a href="https://wa.me/5513997744780" target="_blank" class="btn btn-branco btn-full">
+          <button onclick="enviarWhatsApp()" class="btn btn-branco btn-full">
             Enviar via WhatsApp
-          </a>
+          </button>
         </div>
       </div>
     </div>
@@ -781,7 +955,7 @@
 
   <!-- WHATSAPP FLOAT -->
   <a href="https://wa.me/5513997744780" target="_blank" class="wa-float" title="Fale pelo WhatsApp">
-    &#128172;
+    💬
   </a>
 
 </div><!-- fim #site-conteudo -->
@@ -791,6 +965,10 @@
   var MAX_TENTATIVAS = 5;
   var tentativas = 0;
   var bloqueado = false;
+
+  window.addEventListener('load', function() {
+    document.getElementById('campo-senha').focus();
+  });
 
   function verificarSenha() {
     if (bloqueado) return;
@@ -862,13 +1040,25 @@
     document.body.style.overflow = '';
   }
 
-  function toggleVisibilidade() {
+  function toggleSenha() {
     var campo = document.getElementById('campo-senha');
     campo.type = (campo.type === 'password') ? 'text' : 'password';
   }
 
-  document.body.style.overflow = 'hidden';
-  document.getElementById('campo-senha').focus();
+  function enviarWhatsApp() {
+    var nome     = document.getElementById('f-nome').value.trim();
+    var email    = document.getElementById('f-email').value.trim();
+    var assunto  = document.getElementById('f-assunto').value.trim();
+    var mensagem = document.getElementById('f-mensagem').value.trim();
+
+    var texto = 'Olá! Gostaria de entrar em contato.\n\n';
+    if (nome)     texto += 'Nome: '     + nome     + '\n';
+    if (email)    texto += 'E-mail: '   + email    + '\n';
+    if (assunto)  texto += 'Assunto: '  + assunto  + '\n';
+    if (mensagem) texto += '\nMensagem: ' + mensagem;
+
+    window.open('https://wa.me/5513997744780?text=' + encodeURIComponent(texto), '_blank');
+  }
 </script>
 </body>
 </html>
